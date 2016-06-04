@@ -8,6 +8,9 @@ class GildedRose {
     public static final int MAX_QUALITY = 50;
     public static final int MINIMUM_QUALITY = 0;
     public static final int QUALITY_VARIATION = 1;
+    public static final int SELLIN_VARIATION = 1;
+    public static final int BACKSTAGE_PASSES_STARTS_DOUBLING_QUALITY_SELLIN = 10;
+    public static final int BACKSTAGE_PASSES_STARTS_TRIPLING_QUALITY_SELLIN = 5;
 
     Item[] items;
 
@@ -20,6 +23,7 @@ class GildedRose {
             boolean notAgedBrie = !item.name.equals(AGED_BRIE);
             boolean notBackstagePasses = !item.name.equals(BACKSTAGE_PASSES);
             boolean notRagnaros = !item.name.equals(SULFURAS);
+
             if (notAgedBrie && notBackstagePasses) {
                 if (item.quality > MINIMUM_QUALITY) {
                     if (notRagnaros) {
@@ -31,13 +35,13 @@ class GildedRose {
                     item.quality = item.quality + QUALITY_VARIATION;
 
                     if (item.name.equals(BACKSTAGE_PASSES)) {
-                        if (item.sellIn < 11) {
+                        if (item.sellIn <= BACKSTAGE_PASSES_STARTS_DOUBLING_QUALITY_SELLIN) {
                             if (item.quality < MAX_QUALITY) {
                                 item.quality = item.quality + QUALITY_VARIATION;
                             }
                         }
 
-                        if (item.sellIn < 6) {
+                        if (item.sellIn <= BACKSTAGE_PASSES_STARTS_TRIPLING_QUALITY_SELLIN) {
                             if (item.quality < MAX_QUALITY) {
                                 item.quality = item.quality + QUALITY_VARIATION;
                             }
@@ -47,7 +51,7 @@ class GildedRose {
             }
 
             if (notRagnaros) {
-                item.sellIn = item.sellIn - QUALITY_VARIATION;
+                item.sellIn = item.sellIn - SELLIN_VARIATION;
             }
 
             if (item.sellIn < MINIMUM_QUALITY) {
