@@ -22,55 +22,55 @@ class GildedRose {
         for (Item item : items) {
             boolean notAgedBrie = !item.name.equals(AGED_BRIE);
             boolean notBackstagePasses = !item.name.equals(BACKSTAGE_PASSES);
-            boolean notRagnaros = !item.name.equals(SULFURAS);
+            boolean isSulfuras = item.name.equals(SULFURAS);
 
-            if (notAgedBrie && notBackstagePasses) {
-                if (item.quality > MINIMUM_QUALITY) {
-                    if (notRagnaros) {
-                        item.quality = item.quality - QUALITY_VARIATION;
-                    }
-                }
+            if (isSulfuras) {
+                //Nothing to do here!
             } else {
-                if (item.quality < MAX_QUALITY) {
-                    item.quality = item.quality + QUALITY_VARIATION;
-
-                    if (item.name.equals(BACKSTAGE_PASSES)) {
-                        if (item.sellIn <= BACKSTAGE_PASSES_STARTS_DOUBLING_QUALITY_SELLIN) {
-                            if (item.quality < MAX_QUALITY) {
-                                item.quality = item.quality + QUALITY_VARIATION;
-                            }
-                        }
-
-                        if (item.sellIn <= BACKSTAGE_PASSES_STARTS_TRIPLING_QUALITY_SELLIN) {
-                            if (item.quality < MAX_QUALITY) {
-                                item.quality = item.quality + QUALITY_VARIATION;
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (notRagnaros) {
-                item.sellIn = item.sellIn - SELLIN_VARIATION;
-            }
-
-            if (item.sellIn < MINIMUM_QUALITY) {
-                if (notAgedBrie) {
-                    if (notBackstagePasses) {
-                        if (item.quality > MINIMUM_QUALITY) {
-                            if (notRagnaros) {
-                                item.quality = item.quality - QUALITY_VARIATION;
-                            }
-                        }
-                    } else {
-                        item.quality = MINIMUM_QUALITY;
+                if (notAgedBrie && notBackstagePasses) {
+                    if (item.quality > MINIMUM_QUALITY) {
+                        item.quality = item.quality - QUALITY_VARIATION;
                     }
                 } else {
                     if (item.quality < MAX_QUALITY) {
                         item.quality = item.quality + QUALITY_VARIATION;
+
+                        if (item.name.equals(BACKSTAGE_PASSES)) {
+                            if (item.sellIn <= BACKSTAGE_PASSES_STARTS_DOUBLING_QUALITY_SELLIN) {
+                                if (item.quality < MAX_QUALITY) {
+                                    item.quality = item.quality + QUALITY_VARIATION;
+                                }
+                            }
+
+                            if (item.sellIn <= BACKSTAGE_PASSES_STARTS_TRIPLING_QUALITY_SELLIN) {
+                                if (item.quality < MAX_QUALITY) {
+                                    item.quality = item.quality + QUALITY_VARIATION;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                item.sellIn = item.sellIn - SELLIN_VARIATION;
+
+                if (item.sellIn < MINIMUM_QUALITY) {
+                    if (notAgedBrie) {
+                        if (notBackstagePasses) {
+                            if (item.quality > MINIMUM_QUALITY) {
+                                item.quality = item.quality - QUALITY_VARIATION;
+                            }
+                        } else {
+                            item.quality = MINIMUM_QUALITY;
+                        }
+                    } else {
+                        if (item.quality < MAX_QUALITY) {
+                            item.quality = item.quality + QUALITY_VARIATION;
+                        }
                     }
                 }
             }
+
+
         }
     }
 }
