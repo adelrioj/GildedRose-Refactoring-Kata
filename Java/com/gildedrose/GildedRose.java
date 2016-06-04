@@ -20,14 +20,23 @@ class GildedRose {
 
     public void updateQuality() {
         for (Item item : items) {
-            boolean notAgedBrie = !item.name.equals(AGED_BRIE);
+            boolean isAgedBrie = item.name.equals(AGED_BRIE);
             boolean notBackstagePasses = !item.name.equals(BACKSTAGE_PASSES);
             boolean isSulfuras = item.name.equals(SULFURAS);
 
             if (isSulfuras) {
                 //Nothing to do here!
+            } else if (isAgedBrie) {
+                if (item.quality < MAX_QUALITY)
+                    item.quality = item.quality + QUALITY_VARIATION;
+
+                item.sellIn = item.sellIn - SELLIN_VARIATION;
+
+                if (item.sellIn < MINIMUM_QUALITY)
+                    if (item.quality < MAX_QUALITY)
+                        item.quality = item.quality + QUALITY_VARIATION;
             } else {
-                if (notAgedBrie && notBackstagePasses) {
+                if (notBackstagePasses) {
                     if (item.quality > MINIMUM_QUALITY) {
                         item.quality = item.quality - QUALITY_VARIATION;
                     }
@@ -54,23 +63,15 @@ class GildedRose {
                 item.sellIn = item.sellIn - SELLIN_VARIATION;
 
                 if (item.sellIn < MINIMUM_QUALITY) {
-                    if (notAgedBrie) {
-                        if (notBackstagePasses) {
-                            if (item.quality > MINIMUM_QUALITY) {
-                                item.quality = item.quality - QUALITY_VARIATION;
-                            }
-                        } else {
-                            item.quality = MINIMUM_QUALITY;
+                    if (notBackstagePasses) {
+                        if (item.quality > MINIMUM_QUALITY) {
+                            item.quality = item.quality - QUALITY_VARIATION;
                         }
                     } else {
-                        if (item.quality < MAX_QUALITY) {
-                            item.quality = item.quality + QUALITY_VARIATION;
-                        }
+                        item.quality = MINIMUM_QUALITY;
                     }
                 }
             }
-
-
         }
     }
 }
