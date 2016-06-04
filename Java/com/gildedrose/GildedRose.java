@@ -20,45 +20,7 @@ class GildedRose {
 
     public void updateQuality() {
         for (Item item : items) {
-            boolean isAgedBrie = item.name.equals(AGED_BRIE);
-            boolean isBackstagePasses = item.name.equals(BACKSTAGE_PASSES);
-            boolean isSulfuras = item.name.equals(SULFURAS);
-
-            if (isSulfuras) {
-                //Nothing to do here!
-            } else if (isAgedBrie) {
-                if (item.quality < MAX_QUALITY)
-                    item.quality = item.quality + QUALITY_VARIATION;
-
-                item.sellIn = item.sellIn - SELLIN_VARIATION;
-
-                if (item.sellIn < MINIMUM_QUALITY)
-                    if (item.quality < MAX_QUALITY)
-                        item.quality = item.quality + QUALITY_VARIATION;
-
-            } else if (isBackstagePasses) {
-                if (item.quality < MAX_QUALITY) {
-                    item.quality = item.quality + QUALITY_VARIATION;
-                    if (item.sellIn <= BACKSTAGE_PASSES_STARTS_DOUBLING_QUALITY_SELLIN && item.quality < MAX_QUALITY)
-                        item.quality = item.quality + QUALITY_VARIATION;
-                    if (item.sellIn <= BACKSTAGE_PASSES_STARTS_TRIPLING_QUALITY_SELLIN && item.quality < MAX_QUALITY)
-                        item.quality = item.quality + QUALITY_VARIATION;
-                }
-
-                item.sellIn = item.sellIn - SELLIN_VARIATION;
-
-                if (item.sellIn < MINIMUM_QUALITY)
-                    item.quality = MINIMUM_QUALITY;
-
-            } else { //any item
-                if (item.quality > MINIMUM_QUALITY)
-                    item.quality = item.quality - QUALITY_VARIATION;
-
-                item.sellIn = item.sellIn - SELLIN_VARIATION;
-
-                if (item.sellIn < MINIMUM_QUALITY && item.quality > MINIMUM_QUALITY)
-                    item.quality = item.quality - QUALITY_VARIATION;
-            }
+            ItemQualityUpdaterFactory.getItemUpdater(item.name).updateQuality(item);
         }
     }
 }
