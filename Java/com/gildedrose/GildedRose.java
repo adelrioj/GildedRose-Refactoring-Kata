@@ -8,6 +8,8 @@ class GildedRose {
     public static final int MAX_QUALITY = 50;
     public static final int MINIMUM_QUALITY = 0;
     public static final int QUALITY_VARIATION = 1;
+    public static final int HIGHER_BACKSTAGE_SELLIN_BEFORE_DOUBLE_QUALITY = 11;
+    public static final int HIBHER_BACKSTAGE_SELLIN_BEFORE_TRIPLE_QUALITY = 6;
 
     Item[] items;
 
@@ -31,16 +33,12 @@ class GildedRose {
                     item.quality = item.quality + QUALITY_VARIATION;
 
                     if (item.name.equals(BACKSTAGE_PASSES)) {
-                        if (item.sellIn < 11) {
-                            if (item.quality < MAX_QUALITY) {
-                                item.quality = item.quality + QUALITY_VARIATION;
-                            }
+                        if (item.sellIn < HIGHER_BACKSTAGE_SELLIN_BEFORE_DOUBLE_QUALITY) {
+                            increaseQuality(item);
                         }
 
-                        if (item.sellIn < 6) {
-                            if (item.quality < MAX_QUALITY) {
-                                item.quality = item.quality + QUALITY_VARIATION;
-                            }
+                        if (item.sellIn < HIBHER_BACKSTAGE_SELLIN_BEFORE_TRIPLE_QUALITY) {
+                            increaseQuality(item);
                         }
                     }
                 }
@@ -62,11 +60,15 @@ class GildedRose {
                         item.quality = MINIMUM_QUALITY;
                     }
                 } else {
-                    if (item.quality < MAX_QUALITY) {
-                        item.quality = item.quality + QUALITY_VARIATION;
-                    }
+                    increaseQuality(item);
                 }
             }
+        }
+    }
+
+    private void increaseQuality(Item item) {
+        if (item.quality < MAX_QUALITY) {
+            item.quality = item.quality + QUALITY_VARIATION;
         }
     }
 }
